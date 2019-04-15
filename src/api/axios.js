@@ -30,7 +30,9 @@ axios.defaults.timeout = 2000
 // post请求头
 axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded;charset=UTF-8'
-
+axios.defaults.headers.patch['Content-Type'] =
+  'application/x-www-form-urlencoded;charset=UTF-8'
+axios.defaults.headers.patch['Authorization'] = 'Basic YWRtaW46YWRtaW4='
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
@@ -157,10 +159,13 @@ export const delet = url => {
   })
 }
 
-export const patch = (url, ...params) => {
+export const patch = (url, params) => {
+  var formData = new FormData()
+  formData.append('username', params.username)
+  formData.append('password', params.password)
   return new Promise((resolve, reject) => {
     axios
-      .patch(url, QS.stringify(...params))
+      .patch(url, formData)
       .then(res => {
         resolve(res.data)
       })
