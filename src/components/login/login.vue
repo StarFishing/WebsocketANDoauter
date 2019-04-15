@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class='login'
-         v-show='!resetpwd'>
+         v-if='!resetpwdflag'>
       <div class="header-main">
         <h2>用户登陆</h2>
         <div class="header-bottom">
@@ -54,15 +54,15 @@
                 <div class="bottom">
                   <span @click="loging">登陆</span>
                 </div>
-                <p><a href="#"
-                     @click="changestate">忘记密码?</a></p>
+                <!-- <p><a href="#"
+                     @click="changestate">忘记密码?</a></p> -->
               </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <resetpwd v-show="resetpwd"
+    <resetpwd v-if="resetpwdflag"
               @resetpassword="subreset"></resetpwd>
   </div>
 
@@ -98,7 +98,7 @@
 </style>
 <script>
 /*eslint-disable*/
-import { get, post } from '@/api/axios.js'
+import { get, post, patch } from '@/api/axios.js'
 import * as oatu from '@/api/permission.js'
 import * as cookie from '@/api/getcookie'
 import { mapMutations, mapGetters } from 'vuex'
@@ -113,7 +113,7 @@ export default {
       name: '',
       pwd: '',
       rememberPassword: false,
-      resetpwd: false
+      resetpwdflag: false
     }
   },
   created: function () {
@@ -220,7 +220,7 @@ export default {
       this.rememberPassword = this.$refs.rember.checked
     },
     changestate () {
-      this.resetpwd = true
+      this.resetpwdflag = true
     },
     subreset (obj) {
       //   if (this.token || cookie.gettoken()) {
@@ -228,10 +228,10 @@ export default {
       //     cookie.removetoken()
       //   }
       // token不存在时重发请求
-      post('/users/password', obj)
+      patch('/users/changePassword', obj)
         .then(data => {
           //   console.log(data)
-          if (data.code !== '0') {
+          if (data.code !== 1) {
             this.$Message.error({
               content: '密码修改失败！请重试',
               duration: 1
@@ -248,7 +248,7 @@ export default {
           //     cookie.removecookie()
           //   }
           // 修改密码界面隐藏
-          this.resetpwd = false
+          this.resetpwdflag = false
         })
         .catch(() => {
           this.$Message.error({
@@ -256,9 +256,8 @@ export default {
             duration: 1
           })
 
-          this.resetpwd = false
+          this.resetpwdflag = false
         }
-
         )
 
 
