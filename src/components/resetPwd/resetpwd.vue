@@ -48,6 +48,7 @@ export default {
       let pwd = this.$refs.pwd.value
       let repwd = this.$refs.Confirmpwd.value
       let obj = oatu.resetValidation(userName, pwd, repwd)
+      console.log(obj)
       if (!obj) return
       else this.$emit('resetpassword', obj)
     }
