@@ -22,7 +22,7 @@ export function setcookie (data) {
       obj[items] = data[items]
     }
   }
-  obj.username = Cookies2.set('information', obj)
+  Cookies2.set('information', obj)
 }
 // 清除cookie
 export function removecookie () {

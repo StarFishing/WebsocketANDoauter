@@ -6,7 +6,7 @@
           <div class="eq"
                v-for="(item, id) in items"
                :key="id">
-            <span class="description">One</span>
+            <span class="description">{{websockData}}</span>
             <div class="choice">
               <span @click="getchoice(id,index)"
                     :class="computeClass(id, index)"
@@ -54,6 +54,8 @@ import changePassword from 'components/changePassword/changePassword'
 export default {
   data () {
     return {
+      websockData: '',
+      websock: null,
       datalist: [],//请求设备的信息
       resetUserid: '',
       loading: true,// 用于table-information的表格加载状态
@@ -73,6 +75,7 @@ export default {
     }
   },
   created () {
+    this.initWebSocket();
   },
   mounted: function () {
   },
@@ -170,7 +173,35 @@ export default {
       this.$refs.changepassword.isshow(true)
     },
     ...mapMutations({
-      _setToken: 'SET_TOKEN'    })
+      _setToken: 'SET_TOKEN'    }),
+    initWebSocket () { // 初始化weosocket
+      const wsuri = `ws://192.168.18.169:8059/websocket`// 这个地址由后端童鞋提供
+      this.websock = new WebSocket(wsuri)
+      this.websock.onmessage = this.websocketonmessage
+      this.websock.onopen = this.websocketonopen
+      this.websock.onerror = this.websocketonerror
+      this.websock.onclose = this.websocketclose
+    },
+    websocketonopen () { // 连接建立之后执行send方法发送数据
+      let actions = { "test": "12345" };
+      this.websocketsend(JSON.stringify(actions));
+      console.log(111)
+    },
+    websocketonerror () { // 连接建立失败重连
+      this.initWebSocket()
+    },
+    websocketonmessage (e) {
+      let _this = this // 数据接收
+      const redata = JSON.parse(e.data)
+      console.log("接收数据  " + redata)
+
+    },
+    websocketsend (Data) { // 数据发送
+      this.websock.send(Data)
+    },
+    websocketclose (e) { // 关闭
+      console.log('断开连接', e)
+    }
   },
   computed: {
     computeClass () {

@@ -8,14 +8,15 @@ import 'iview/dist/styles/iview.css'
 import * as cookie from '@/api/getcookie'
 Vue.config.productionTip = false
 Vue.use(iView)
-if (cookie.getcookie().username) {
+if (cookie.getcookie()) {
   store.commit('SET_USER', {
     userName: cookie.getcookie().username
   })
-}
-if (cookie.getcookie().role) {
   store.commit('SET_ROLE', {
     role: cookie.getcookie().role
+  })
+  store.commit('SET_PWD', {
+    role: cookie.getcookie().password
   })
 }
 if (cookie.gettoken()) {

@@ -25,37 +25,37 @@
     <div class='login'
          v-show='!resetpwd'>
       <div class="header-main">
-        <h2>Login Now</h2>
+        <h2>用户登陆</h2>
         <div class="header-bottom">
           <div class="header-right w3agile">
             <div class="header-left-bottom agileinfo">
               <form>
                 <div class="icon1">
                   <input type="text"
-                         placeholder="User Name"
+                         placeholder="用户名"
                          required=""
                          ref="name"
-                         :value="name" />
+                         :value="userName" />
                 </div>
                 <div class="icon1">
                   <input type="password"
-                         placeholder="Password"
+                         placeholder="密码"
                          required=""
                          ref="pwd"
-                         :value="pwd" />
+                         :value="password" />
                 </div>
                 <div class="login-check">
                   <label class="checkbox"><input type="checkbox"
                            name="checkbox"
                            checked=""
                            ref="rember"
-                           @click="remember"><i> </i> Keep me logged in</label>
+                           @click="remember"><i> </i> 记住账号密码</label>
                 </div>
                 <div class="bottom">
-                  <span @click="loging">Log in</span>
+                  <span @click="loging">登陆</span>
                 </div>
                 <p><a href="#"
-                     @click="changestate">Forgot Password?</a></p>
+                     @click="changestate">忘记密码?</a></p>
               </form>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default {
       //     cookie.removetoken()
       //   }
       // token不存在时重发请求
-      post('/user/resetpassword', obj)
+      post('/users/password', obj)
         .then(data => {
           //   console.log(data)
           if (data.code !== '0') {
@@ -303,7 +303,7 @@ export default {
     window.onresize()
   },
   computed: {
-    ...mapGetters(['token']) // 获取当前token值
+    ...mapGetters(['token', 'userName', 'password']) // 获取当前token值
   },
   watch: {
     // 监听token值的变化，刷新登录页
