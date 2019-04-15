@@ -28,6 +28,9 @@
       <!-- <span class="adduser"
             @click="setadd">添加</span> -->
     </div>
+    <div class="avatar">
+      {{userName}}
+    </div>
     <table-information v-show="addclick&&role==2"
                        :userlist="userlist"
                        :loading="loading"></table-information>
@@ -75,12 +78,22 @@ export default {
     }
   },
   created () {
-    this.initWebSocket();
+    if (cookie.getremember()) {
+      this._setpassword(cookie.getcookie().password)
+    }
+    this._setuser(cookie.getcookie().username)
+    this._setuserRole(cookie.getcookie().role)
+    //this.initWebSocket();
   },
   mounted: function () {
   },
   methods: {
     getchoice (id, index) {
+      // 进入就收起用户管理界面，避免界面重冲突
+      this.addclick = false
+      // 界面收起后，恢复加载状态初始值
+      this.loading = true
+      // 下面是针对设备信息的处理
       this.currentButtonIndex[id].button = index
       // 获取当前点击的设备，和对当前设备做的哪一步操作（index）
       if (this.itembutton[index].description === "获取") {
@@ -124,6 +137,7 @@ export default {
     seeInformation () {
       // 查看用户信息时隐藏设备信息
       this.showList = false
+      this.loadinginformationList = true
       // 获取所有用户信息
       if (this.addclick) {
         this.addclick = false
@@ -171,9 +185,13 @@ export default {
     },
     changePassword () {
       this.$refs.changepassword.isshow(true)
+      this.resetUserid = cookie.gettoken()
     },
     ...mapMutations({
-      _setToken: 'SET_TOKEN'    }),
+      _setuser: 'SET_USER',
+      _setToken: 'SET_TOKEN',
+      _setpassword: 'SET_PWD',
+      _setuserRole: 'SET_ROLE'    }),
     initWebSocket () { // 初始化weosocket
       const wsuri = `ws://192.168.18.169:8059/websocket`// 这个地址由后端童鞋提供
       this.websock = new WebSocket(wsuri)
@@ -353,5 +371,20 @@ export default {
   box-shadow: 2px 1px 8px 0px #444;
   border-radius: 8px;
   margin-bottom: 10px;
+}
+.avatar {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  left: 25px;
+  top: 25px;
+  font-family: fantasy;
+  /* background: gray; */
+  text-align: center;
+  line-height: 50px;
+  font-size: 16px;
+  box-shadow: 0px 2px 11px 1px #69635d;
+  overflow: hidden;
 }
 </style>
