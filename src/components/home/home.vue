@@ -41,6 +41,9 @@
     <information-list :showList="showList"
                       :loading="loadinginformationList"
                       :datalist="datalist"></information-list>
+    <system-calibration ref="sysTime"></system-calibration>
+    <extension-control ref="extenControl"></extension-control>
+    <system-command ref="sysco"></system-command>
   </div>
 
 </template>
@@ -54,6 +57,9 @@ import tableInformation from 'components/tableInformation/tableInformation'
 import informationList from 'components/informationList/informationList'
 import adduser from 'components/adduser/adduser'
 import changePassword from 'components/changePassword/changePassword'
+import systemCalibration from 'components/systemCalibration/systemCalibration'
+import extensionControl from 'components/extensionControl/extensionControl'
+import systemCommand from 'components/systemCommand/systemCommand'
 export default {
   data () {
     return {
@@ -66,13 +72,12 @@ export default {
       showList: false,
       addclick: false,// 默认false，测试用true
       adduserflag: false,
-      items: [0, 1, 2, 3],
-      currentButtonIndex: [{ 'button': -1 }, { 'button': -1 }, { 'button': -1 }, { 'button': -1 }],//维护每个按钮的状态
+      items: [0, 1, 2],
+      currentButtonIndex: [{ 'button': -1 }, { 'button': -1 }, { 'button': -1 }],//维护每个按钮的状态
       itembutton: [
-        { 'description': '打开', 'class': 'on' },
-        { 'description': '关闭', 'class': 'off' },
-        { 'description': '获取', 'class': 'put' },
-        { 'description': '发送', 'class': 'post' }
+        { 'description': '系统校时', 'class': 'time' },
+        { 'description': '分机控制', 'class': 'off' },
+        { 'description': '系统控制', 'class': 'put' }
       ],
       userlist: []
     }
@@ -96,23 +101,22 @@ export default {
       // 下面是针对设备信息的处理
       this.currentButtonIndex[id].button = index
       // 获取当前点击的设备，和对当前设备做的哪一步操作（index）
-      if (this.itembutton[index].description === "获取") {
-        get('/list').then((data) => {
-          this.datalist = data.data.content
-          this.showList = true
-          this.loadinginformationList = false
-        }).catch(() => {
-          this.$Message.error({
-            content: '请求出错，请稍后重试',
-            duration: 1
-          })
-        })
+      if (this.itembutton[index].description === "系统校时") {
         //请求数据
+        this.$refs.sysTime.changeShowstate()
       }
-      else {
-        this.showList = false
-        this.loadinginformationList = true
+      if (this.itembutton[index].description === "分机控制") {
+        //请求数据
+        this.$refs.extenControl.changeShowstate()
       }
+      if (this.itembutton[index].description === "系统控制") {
+        //请求数据
+        this.$refs.sysco.changeShowstate()
+      }
+      //   else {
+      //     this.showList = false
+      //     this.loadinginformationList = true
+      //   }
     },
     exit () {
       let obj = { 'exituser': this.userName }
@@ -241,7 +245,10 @@ export default {
     tableInformation,
     adduser,
     changePassword,
-    informationList
+    informationList,
+    systemCalibration,
+    extensionControl,
+    systemCommand
   }
 }
 </script>
@@ -252,9 +259,10 @@ export default {
   height: 100vh;
   overflow: hidden;
   color: black;
+  background: #b3c2c9;
   /* background: url(../../assets/bg.jpg);
   background-size: 100% 100%; */
-  background-image: linear-gradient(135deg, #f6d4d8, #b3c2db);
+  /* background-image: linear-gradient(135deg, #f6d4d8, #b3c2db); */
 }
 .wrapper {
   position: absolute;
@@ -287,7 +295,7 @@ export default {
   /* border: 1px solid white; */
   border-radius: 10px;
   position: relative;
-  background-image: url("http://www.pptbz.com/pptpic/UploadFiles_6909/201203/2012031220134655.jpg");
+  background-image: url("http://img4.imgtn.bdimg.com/it/u=2146046871,2611785107&fm=26&gp=0.jpg");
   background-size: cover;
   overflow: hidden;
   box-shadow: 2px 1px 8px 0px #444;
