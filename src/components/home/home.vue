@@ -72,7 +72,19 @@ export default {
       showList: false,
       addclick: false,// 默认false，测试用true
       adduserflag: false,
-      items: [0, 1, 2],
+      // items: [0, 1, 2],//代表三个设备，在下面修改为包含ID的结构
+      items: [{
+        name: '',//设备名，可能会用到
+        id: '0'//设备ID
+      },
+      {
+        name: '',
+        id: '1'
+      },
+      {
+        name: '',
+        id: '2'
+      }],
       currentButtonIndex: [{ 'button': -1 }, { 'button': -1 }, { 'button': -1 }],//维护每个按钮的状态
       itembutton: [
         { 'description': '系统校时', 'class': 'time' },
