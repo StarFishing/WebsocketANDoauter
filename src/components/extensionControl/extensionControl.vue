@@ -192,13 +192,29 @@
           <Option value="2">辐射源融合</Option>
         </Select>
       </FormItem>
+      <FormItem label="更新所有">
+        <RadioGroup v-model="isOnly">
+          <Radio label="YES">
+            <span>是</span>
+          </Radio>
+          <Radio label="NO">
+            <span>否</span>
+          </Radio>
+        </RadioGroup>
+      </FormItem>
     </Form>
   </Modal>
 </template>
 <script>
-/*eslint-disable*/
 import { post } from '@/api/axios.js'
+import * as storage from '@/api/localstorage.js'
 export default {
+  props: {
+    equipmentID: {// 设备ID
+      type: String,
+      default: ''
+    }
+  },
   data () {
     const validateMobile = (rule, value, callback) => {
       if (parseInt(value) < 0) {
@@ -208,6 +224,7 @@ export default {
       }
     }
     return {
+      isOnly: 'NO',
       modal1: false,
       loading: true,
       formValidate: {
@@ -320,10 +337,11 @@ export default {
           extensionControlCMD.host = '192.168.31.69'
           //   let obj = { 'extensionControlCMD': this.mapformValidate(), 'host': '192.168.31.69' }
           console.log(extensionControlCMD)
-          post('/deployment/sendExtensionControlCMD/communication', extensionControlCMD).then(() => {
-            if (data.code == 1) {
+          post('/deployment/sendExtensionControlCMD/communication', extensionControlCMD).then((data) => {
+            if (data.code === 1) {
               setTimeout(() => {
                 this.changeLoading()
+                storage.set('extention', this.formValidate)
                 this.handleReset('formValidate')
                 this.modal1 = false
                 this.$Message.success({
@@ -331,8 +349,7 @@ export default {
                   duration: 1
                 })
               }, 500)
-            }
-            else {
+            } else {
               this.$Message.error({
                 content: '指令提交失败',
                 duration: 1
@@ -386,6 +403,14 @@ export default {
     }
   },
   components: {
+  },
+  mounted () {
+    let id = this.equipmentID
+    if (storage.get(id)) {
+      if (storage.get(id).extention) {
+        this.formValidate = storage.get(id).extention
+      }
+    }
   }
 }
 </script>
