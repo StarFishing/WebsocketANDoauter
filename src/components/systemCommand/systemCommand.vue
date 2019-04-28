@@ -237,13 +237,31 @@
           <Option value="1">不衰(20dB)</Option>
         </Select>
       </FormItem>
+      <FormItem label="更新所有">
+        <RadioGroup v-model="isOnly">
+          <Radio label="YES">
+            <span>是</span>
+          </Radio>
+          <Radio label="NO">
+            <span>否</span>
+          </Radio>
+        </RadioGroup>
+      </FormItem>
     </Form>
   </Modal>
 </template>
 <script>
+import * as storage from '@/api/localstorage.js'
 export default {
+  props: {
+    equipmentID: {// 设备ID
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
+      isOnly: 'NO',
       modal1: false,
       loading: true,
       formValidate: {
@@ -357,6 +375,14 @@ export default {
 
     }
   },
+  mounted () {
+    let id = this.equipmentID
+    if (storage.get(id)) {
+      if (storage.get(id).systemcommand) {
+        this.formValidate = storage.get(id).systemcommand
+      }
+    }
+  },
   methods: {
     changeLoading () {
       // 避免点击确定模态框直接关闭
@@ -379,6 +405,7 @@ export default {
         if (valid) {
           setTimeout(() => {
             this.changeLoading()
+            storage.set('systemcommand', this.formValidate)
             this.handleReset('formValidate')
             this.modal1 = false
             this.$Message.success('设定完成')
