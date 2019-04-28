@@ -35,6 +35,16 @@
             </Col>
           </Row>
         </FormItem>
+        <FormItem label="更新所有">
+          <RadioGroup v-model="isOnly">
+            <Radio label="YES">
+              <span>是</span>
+            </Radio>
+            <Radio label="NO">
+              <span>否</span>
+            </Radio>
+          </RadioGroup>
+        </FormItem>
       </Form>
     </div>
 
@@ -51,14 +61,21 @@
 </style>
 
 <script>
-/*eslint-disable */
 import { GMTToStr } from '@/api/transformDate'
 import { post } from '@/api/axios.js'
+import * as storage from '@/api/localstorage.js'
 export default {
+  props: {
+    equipmentID: {// 设备ID
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       modal1: false,
       loading: true,
+      isOnly: 'NO', // 判断是否全部更新
       formValidate: {
         date: '',
         time: ''
@@ -90,12 +107,16 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          // 转换时间格式
           let dataTime = GMTToStr(this.formValidate.date, this.formValidate.time)
           let obj = { 'time': dataTime, 'host': '192.168.31.69' }
           post('/deployment/sendSystemTiming/communication', obj).then((data) => {
-            if (data.code == 1) {
+            if (data.code === 1) {
               setTimeout(() => {
                 this.changeLoading()
+                // 发送成功将表单数据存到本地
+                storage.set(this.equipmentID, { 'date': this.formValidate })
+                // 清空表单，避免下次打开有初始值
                 this.handleReset('formValidate')
                 this.modal1 = false
                 this.$Message.success({
@@ -103,9 +124,7 @@ export default {
                   duration: 1
                 })
               }, 500)
-
-            }
-            else {
+            } else {
               this.$Message.error({
                 content: '指令提交失败',
                 duration: 1
@@ -119,7 +138,6 @@ export default {
             })
             return this.changeLoading()
           })
-
         } else {
           this.$Message.error('输入不完整')
           return this.changeLoading()
@@ -131,6 +149,16 @@ export default {
     },
     changeShowstate () {
       this.modal1 = true
+    }
+  },
+  mounted () {
+    // 使用上次操作的值
+    let id = this.equipmentID
+    if (storage.get(id)) {
+      if (storage.get(id).date) {
+        this.formValidate.date = storage.get(id).date.date
+        this.formValidate.time = storage.get(id).date.time
+      }
     }
   }
 }
