@@ -17,20 +17,44 @@
             :label-width="80">
         <FormItem label="时间">
           <Row>
-            <Col span="11">
+            <Col span="8">
             <FormItem prop="date">
               <DatePicker type="date"
                           placeholder="Select date"
                           v-model="formValidate.date"></DatePicker>
             </FormItem>
             </Col>
-            <Col span="2"
+            <Col span="1"
                  style="text-align: center">-</Col>
-            <Col span="11">
-            <FormItem prop="time">
-              <TimePicker type="time"
-                          placeholder="Select time"
-                          v-model="formValidate.time"></TimePicker>
+            <Col span="4">
+            <FormItem prop="h">
+              <Input v-model="formValidate.h"
+                     type="number"
+                     placeholder="h"
+                     style="width:50px">
+              </Input>
+            </FormItem>
+            </Col>
+            <Col span="1"
+                 style="text-align: center">:</Col>
+            <Col span="4">
+            <FormItem prop="min">
+              <Input v-model="formValidate.min"
+                     type="number"
+                     placeholder="min"
+                     style="width:50px">
+              </Input>
+            </FormItem>
+            </Col>
+            <Col span="1"
+                 style="text-align: center">:</Col>
+            <Col span="4">
+            <FormItem prop="ms">
+              <Input v-model="formValidate.ms"
+                     type="number"
+                     placeholder="ms"
+                     style="width:50px">
+              </Input>
             </FormItem>
             </Col>
           </Row>
@@ -77,15 +101,23 @@ export default {
       loading: true,
       isOnly: 'NO', // 判断是否全部更新
       formValidate: {
-        date: '',
-        time: ''
+        date: '2019-08-08',
+        h: '9',
+        min: '40',
+        ms: '200'
       },
       ruleValidate: {
         date: [
           { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
         ],
-        time: [
-          { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
+        h: [
+          { required: true, type: 'string', message: '小时', trigger: 'change' }
+        ],
+        min: [
+          { required: true, type: 'string', message: '分钟', trigger: 'change' }
+        ],
+        ms: [
+          { required: true, type: 'string', message: '毫秒', trigger: 'change' }
         ]
       }
     }
@@ -128,7 +160,12 @@ export default {
     },
     sendRequst (url) {
       // 转换时间格式
-      let dataTime = GMTToStr(this.formValidate.date, this.formValidate.time)
+      let timearr = []
+      timearr.push(this.formValidate.ms)
+      timearr.push(this.formValidate.min)
+      timearr.push(this.formValidate.h)
+      let dataTime = GMTToStr(this.formValidate.date, timearr)
+      console.log(dataTime)
       let obj = { 'time': dataTime, 'host': '192.168.31.69' }
       post(url, obj).then((data) => {
         if (data.code === 1) {
@@ -166,7 +203,9 @@ export default {
     if (storage.get(id)) {
       if (storage.get(id).date) {
         this.formValidate.date = storage.get(id).date.date
-        this.formValidate.time = storage.get(id).date.time
+        this.formValidate.h = storage.get(id).date.h
+        this.formValidate.min = storage.get(id).date.min
+        this.formValidate.ms = storage.get(id).date.ms
       }
     }
   }
