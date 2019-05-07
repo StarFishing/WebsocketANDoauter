@@ -333,36 +333,17 @@ export default {
       //   console.log(this.mapformValidate())
       this.$refs[name].validate((valid) => {
         if (valid) {
-          let extensionControlCMD = this.mapformValidate()
-          extensionControlCMD.host = '192.168.31.69'
+          // let extensionControlCMD = this.mapformValidate()
+          // extensionControlCMD.host = '192.168.31.69'
           //   let obj = { 'extensionControlCMD': this.mapformValidate(), 'host': '192.168.31.69' }
-          console.log(extensionControlCMD)
-          post('/deployment/sendExtensionControlCMD/communication', extensionControlCMD).then((data) => {
-            if (data.code === 1) {
-              setTimeout(() => {
-                this.changeLoading()
-                storage.set('extention', this.formValidate)
-                this.handleReset('formValidate')
-                this.modal1 = false
-                this.$Message.success({
-                  content: '指令发送成功',
-                  duration: 1
-                })
-              }, 500)
-            } else {
-              this.$Message.error({
-                content: '指令提交失败',
-                duration: 1
-              })
-              return this.changeLoading()
-            }
-          }).catch(() => {
-            this.$Message.error({
-              content: '网络请求出错',
-              duration: 1
-            })
-            return this.changeLoading()
-          })
+          // console.log(extensionControlCMD)
+          let urlN = '/deployment/sendExtensionControlCMD/communication'
+          let urlY = '/deployment/sendAllExtensionControl/communication'
+          if (this.isOnly === 'NO') {
+            this.sendRequst(urlN)
+          } else if (this.isOnly === 'YES') {
+            this.sendRequst(urlY)
+          }
         } else {
           this.$Message.error('输入不完整')
           return this.changeLoading()
@@ -400,6 +381,36 @@ export default {
       }
       result.extensionControlCharacter = str
       return result
+    },
+    sendRequst (url) {
+      let extensionControlCMD = this.mapformValidate()
+      extensionControlCMD.host = '192.168.31.69'
+      post(url, extensionControlCMD).then((data) => {
+        if (data.code === 1) {
+          setTimeout(() => {
+            this.changeLoading()
+            storage.set('extention', this.formValidate)
+            this.handleReset('formValidate')
+            this.modal1 = false
+            this.$Message.success({
+              content: '指令发送成功',
+              duration: 1
+            })
+          }, 500)
+        } else {
+          this.$Message.error({
+            content: '指令提交失败',
+            duration: 1
+          })
+          return this.changeLoading()
+        }
+      }).catch(() => {
+        this.$Message.error({
+          content: '网络请求出错',
+          duration: 1
+        })
+        return this.changeLoading()
+      })
     }
   },
   components: {
