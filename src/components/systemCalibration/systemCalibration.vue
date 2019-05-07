@@ -107,37 +107,13 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          // 转换时间格式
-          let dataTime = GMTToStr(this.formValidate.date, this.formValidate.time)
-          let obj = { 'time': dataTime, 'host': '192.168.31.69' }
-          post('/deployment/sendSystemTiming/communication', obj).then((data) => {
-            if (data.code === 1) {
-              setTimeout(() => {
-                this.changeLoading()
-                // 发送成功将表单数据存到本地
-                storage.set(this.equipmentID, { 'date': this.formValidate })
-                // 清空表单，避免下次打开有初始值
-                this.handleReset('formValidate')
-                this.modal1 = false
-                this.$Message.success({
-                  content: '指令发送成功',
-                  duration: 1
-                })
-              }, 500)
-            } else {
-              this.$Message.error({
-                content: '指令提交失败',
-                duration: 1
-              })
-              return this.changeLoading()
-            }
-          }).catch(() => {
-            this.$Message.error({
-              content: '网络请求出错',
-              duration: 1
-            })
-            return this.changeLoading()
-          })
+          let urlN = '/deployment/sendSystemTiming/communication'
+          let urlY = '/deployment/sendAllSendSystemTiming/communication'
+          if (this.isOnly === 'NO') {
+            this.sendRequst(urlN)
+          } else if (this.isOnly === 'YES') {
+            this.sendRequst(urlY)
+          }
         } else {
           this.$Message.error('输入不完整')
           return this.changeLoading()
@@ -149,6 +125,39 @@ export default {
     },
     changeShowstate () {
       this.modal1 = true
+    },
+    sendRequst (url) {
+      // 转换时间格式
+      let dataTime = GMTToStr(this.formValidate.date, this.formValidate.time)
+      let obj = { 'time': dataTime, 'host': '192.168.31.69' }
+      post(url, obj).then((data) => {
+        if (data.code === 1) {
+          setTimeout(() => {
+            this.changeLoading()
+            // 发送成功将表单数据存到本地
+            storage.set(this.equipmentID, { 'date': this.formValidate })
+            // 清空表单，避免下次打开有初始值
+            this.handleReset('formValidate')
+            this.modal1 = false
+            this.$Message.success({
+              content: '指令发送成功',
+              duration: 1
+            })
+          }, 500)
+        } else {
+          this.$Message.error({
+            content: '指令提交失败',
+            duration: 1
+          })
+          return this.changeLoading()
+        }
+      }).catch(() => {
+        this.$Message.error({
+          content: '网络请求出错',
+          duration: 1
+        })
+        return this.changeLoading()
+      })
     }
   },
   mounted () {
