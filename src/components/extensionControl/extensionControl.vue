@@ -228,26 +228,26 @@ export default {
       modal1: false,
       loading: true,
       formValidate: {
-        pulse: '', // 下面为分机控制字字段
-        dog: '',
-        state: '',
-        open: '',
-        transformModal: '',
-        dealmodal: '',
-        calibrationModal: '',
-        selectcalibration: '',
-        Combinerchoice: '', // 分机控制字段结束
-        threshold: '',
-        overallpulse: '',
-        minamplitude: '',
-        maxamplitude: '',
-        minPulsewidth: '',
-        maxPulsewidth: '',
-        filterMaximumFrequency: '',
-        filterMinimumFrequency: '',
-        shieldingMaximumFrequency: '',
-        shieldingMinimumFrequency: '',
-        defalutUpdate: ''
+        pulse: '0', // 下面为分机控制字字段
+        dog: '0',
+        state: '0',
+        open: '0',
+        transformModal: '0',
+        dealmodal: '0',
+        calibrationModal: '0',
+        selectcalibration: '0',
+        Combinerchoice: '0', // 分机控制字段结束
+        threshold: '0',
+        overallpulse: '0',
+        minamplitude: '0',
+        maxamplitude: '0',
+        minPulsewidth: '0',
+        maxPulsewidth: '0',
+        filterMaximumFrequency: '0',
+        filterMinimumFrequency: '0',
+        shieldingMaximumFrequency: '0',
+        shieldingMinimumFrequency: '0',
+        defalutUpdate: '0'
       },
       ruleValidate: {
         pulse: [
@@ -389,7 +389,8 @@ export default {
         if (data.code === 1) {
           setTimeout(() => {
             this.changeLoading()
-            storage.set('extention', this.formValidate)
+            // 发送成功将表单数据存到本地
+            storage.set(this.equipmentID, { 'extention': this.formValidate })
             this.handleReset('formValidate')
             this.modal1 = false
             this.$Message.success({
