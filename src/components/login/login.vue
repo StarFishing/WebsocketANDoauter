@@ -1,26 +1,6 @@
 <template>
   <div class="homepage-hero-module">
     <div class="video-container">
-      <!-- <div :style="fixStyle"
-           class="filter"></div>
-      <video :style="fixStyle"
-             autoplay
-             loop
-             class="fillWidth"
-             v-on:canplay="canplay">
-        <source src="./src/MP4/Lonely-Blue.mp4"
-                type="video/mp4" />
-        浏览器不支持 video 标签，建议升级浏览器。
-        <source src="./src/WEBM/Lonely-Blue.webm"
-                type="video/webm" />
-        浏览器不支持 video 标签，建议升级浏览器。
-      </video>
-      <div class="poster hidden"
-           v-if="!vedioCanPlay">
-        <img :style="fixStyle"
-             src="./src/Snapshots/Lonely-Blue.jpg"
-             alt="">
-      </div> -->
     </div>
     <div class='login'
          v-if='!resetpwdflag'>
@@ -167,6 +147,12 @@ export default {
             let dataObj = data
             let that = this
             this.rememberPassword = this.$refs.rember.checked
+            // 获取 IP
+            get('/deployment').then((data) => {
+              this._sethost(data.data[0].host)
+            }).catch(() => {
+              throw new Error('IP获取失败')
+            })
             setTimeout(() => {
               this._setToken(dataObj.token)
               this._setuser(dataObj.username)
@@ -192,8 +178,6 @@ export default {
                 name: 'Home'
               })
             }
-
-
           })
           .catch(() =>
             this.$Message.error({
@@ -201,7 +185,6 @@ export default {
               duration: 1
             })
           )
-
       }
     },
     _getFormat () {
@@ -216,7 +199,8 @@ export default {
       _setuser: 'SET_USER',
       _setToken: 'SET_TOKEN',
       _setpassword: 'SET_PWD',
-      _setuserRole: 'SET_ROLE'    }),
+      _setuserRole: 'SET_ROLE',
+      _sethost: 'SET_HOST'    }),
     remember () {
       this.rememberPassword = this.$refs.rember.checked
     },
@@ -303,7 +287,7 @@ export default {
     window.onresize()
   },
   computed: {
-    ...mapGetters(['token', 'userName', 'password']) // 获取当前token值
+    ...mapGetters(['token', 'userName', 'password', 'ip']) // 获取当前token值
   },
   watch: {
     // 监听token值的变化，刷新登录页
