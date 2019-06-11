@@ -209,12 +209,6 @@
 import { post } from '@/api/axios.js'
 import * as storage from '@/api/localstorage.js'
 export default {
-  props: {
-    equipmentID: {// 设备ID
-      type: String,
-      default: ''
-    }
-  },
   data () {
     const validateMobile = (rule, value, callback) => {
       if (parseInt(value) < 0) {
@@ -224,6 +218,7 @@ export default {
       }
     }
     return {
+      equipmentID: '',
       isOnly: 'NO',
       modal1: false,
       loading: true,
@@ -237,14 +232,14 @@ export default {
         calibrationModal: '0',
         selectcalibration: '0',
         Combinerchoice: '0', // 分机控制字段结束
-        threshold: '0',
-        overallpulse: '0',
+        threshold: '1',
+        overallpulse: '100',
         minamplitude: '0',
-        maxamplitude: '0',
-        minPulsewidth: '0',
-        maxPulsewidth: '0',
-        filterMaximumFrequency: '0',
-        filterMinimumFrequency: '0',
+        maxamplitude: '255',
+        minPulsewidth: '1',
+        maxPulsewidth: '30000',
+        filterMaximumFrequency: '955',
+        filterMinimumFrequency: '545',
         shieldingMaximumFrequency: '0',
         shieldingMinimumFrequency: '0',
         defalutUpdate: '0'
@@ -384,7 +379,7 @@ export default {
     },
     sendRequst (url) {
       let extensionControlCMD = this.mapformValidate()
-      extensionControlCMD.host = '192.168.31.69'
+      extensionControlCMD.host = '192.168.31.88'
       post(url, extensionControlCMD).then((data) => {
         if (data.code === 1) {
           setTimeout(() => {
@@ -412,17 +407,21 @@ export default {
         })
         return this.changeLoading()
       })
+    },
+    setId (id) {
+      this.equipmentID = id
     }
   },
-  components: {
-  },
-  mounted () {
-    let id = this.equipmentID
-    if (storage.get(id)) {
-      if (storage.get(id).extention) {
-        this.formValidate = storage.get(id).extention
-      }
+  watch: {
+    modal1 () {
+      // let id = this.equipmentID
+      // if (storage.get(id)) {
+      //   if (storage.get(id).extention) {
+      //     this.formValidate = storage.get(id).extention.extention
+      //   }
+      // }
     }
+
   }
 }
 </script>

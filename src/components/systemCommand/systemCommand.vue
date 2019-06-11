@@ -98,7 +98,7 @@
           <Option value="3">右</Option>
         </Select>
       </FormItem>
-      <FormItem label="天线二选择(侦察)"
+      <FormItem label="天线二选择"
                 prop="chooseAntenna2">
         <Select v-model="formValidate.chooseAntenna2"
                 placeholder="天线二"
@@ -109,132 +109,40 @@
           <Option value="3">右</Option>
         </Select>
       </FormItem>
-      <p style="font-size: 14px;font-weight: 800;margin-left: 10px;">射频1衰减</p>
-      <FormItem label="6-18GHz射频"
-                prop="attenuation_0">
-        <Select v-model="formValidate.attenuation_0"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
+      <FormItem label="自检源衰减"
+                prop="selfInspectionAttenuation">
+        <Input v-model="formValidate.selfInspectionAttenuation"
+               type="number"
+               placeholder="单位:MHz"
+               style="width:120px">
+        </Input>
         </Select>
       </FormItem>
-      <FormItem label="2-6GHz射频1前级"
-                prop="attenuation_1">
-        <Select v-model="formValidate.attenuation_1"
-                placeholder="设置衰减"
+      <FormItem label="脉内引导批次号开关"
+                prop="guidanceSwitch">
+        <Select v-model="formValidate.guidanceSwitch"
+                placeholder="开关"
                 style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(10dB)</Option>
+          <Option value="0">打开</Option>
+          <Option value="1">关闭</Option>
         </Select>
       </FormItem>
-      <FormItem label="2-6GHz射频1后级"
-                prop="attenuation_2">
-        <Select v-model="formValidate.attenuation_2"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
+      <FormItem label="脉内引导批次号"
+                prop="guidance">
+        <Input v-model="formValidate.guidance"
+               type="number"
+               placeholder="单位:MHz"
+               style="width:120px">
+        </Input>
         </Select>
       </FormItem>
-      <FormItem label="0.8-2GHz射频1前级"
-                prop="attenuation_3">
-        <Select v-model="formValidate.attenuation_3"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.8-2GHz射频1后级"
-                prop="attenuation_4">
-        <Select v-model="formValidate.attenuation_4"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.38-0.8GHz射频1前级"
-                prop="attenuation_5">
-        <Select v-model="formValidate.attenuation_5"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.8-2GHz射频1后级"
-                prop="attenuation_6">
-        <Select v-model="formValidate.attenuation_6"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <p style="font-size: 14px;font-weight: 800;margin-left: 10px;">射频2衰减</p>
-      <FormItem label="6-18GHz射频"
-                prop="attenuationTwo_0">
-        <Select v-model="formValidate.attenuationTwo_0"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="2-6GHz射频1前级"
-                prop="attenuationTwo_1">
-        <Select v-model="formValidate.attenuationTwo_1"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(10dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="2-6GHz射频1后级"
-                prop="attenuationTwo_2">
-        <Select v-model="formValidate.attenuationTwo_2"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.8-2GHz射频1前级"
-                prop="attenuationTwo_3">
-        <Select v-model="formValidate.attenuationTwo_3"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.8-2GHz射频1后级"
-                prop="attenuationTwo_4">
-        <Select v-model="formValidate.attenuationTwo_4"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.38-0.8GHz射频1前级"
-                prop="attenuationTwo_5">
-        <Select v-model="formValidate.attenuationTwo_5"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="0.8-2GHz射频1后级"
-                prop="attenuationTwo_6">
-        <Select v-model="formValidate.attenuationTwo_6"
-                placeholder="设置衰减"
-                style="width:120px">
-          <Option value="0">衰</Option>
-          <Option value="1">不衰(20dB)</Option>
+      <FormItem label="故障检测门限"
+                prop="faultDetect">
+        <Input v-model="formValidate.faultDetect"
+               type="number"
+               placeholder="单位:MHz"
+               style="width:120px">
+        </Input>
         </Select>
       </FormItem>
       <FormItem label="更新所有">
@@ -252,54 +160,29 @@
 </template>
 <script>
 import * as storage from '@/api/localstorage.js'
+import { post } from '@/api/axios.js'
+import { mapGetters } from 'vuex'
 export default {
-  props: {
-    equipmentID: {// 设备ID
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
+      equipmentID: '',
       isOnly: 'NO',
       modal1: false,
       loading: true,
       formValidate: {
-        workPattern: '',
-        workCycle: '',
+        workPattern: '2',
+        workCycle: '20',
         workCycleAmount: '1',
-        beginFrequency: '',
-        endFrequency: '',
-        steppedFrequency: '',
-        chooseBandwidth: '',
-        chooseAntenna1: '',
-        chooseAntenna2: '',
-        attenuation_0: '',
-        attenuation_1: '',
-        attenuation_2: '',
-        attenuation_3: '',
-        attenuation_4: '',
-        attenuation_5: '',
-        attenuation_6: '', // 下面空出一个射频1长电缆衰减控制
-        balancedAttenuationRF1: '',
-        attenuationTwo_0: '',
-        attenuationTwo_1: '',
-        attenuationTwo_2: '',
-        attenuationTwo_3: '',
-        attenuationTwo_4: '',
-        attenuationTwo_5: '',
-        attenuationTwo_6: '',
-        balancedAttenuationRF2: '',
-        attenuationMF1: '',
-        attenuationMF2: '',
-        attenuationControlWay: '',
-        selfInspectionAttenuation: '',
-        guidanceSwitch: '',
-        guidance: '',
-        faultDetect: '',
-        timingCode: '',
-        onceExecuteCMDTimeNeeded: ''
-
+        beginFrequency: '500',
+        endFrequency: '500',
+        steppedFrequency: '100',
+        chooseBandwidth: '0',
+        chooseAntenna1: '0',
+        chooseAntenna2: '0',
+        selfInspectionAttenuation: '0',
+        guidanceSwitch: '1',
+        guidance: '0',
+        faultDetect: '0'
       },
       ruleValidate: {
         workPattern: [
@@ -329,47 +212,17 @@ export default {
         chooseAntenna2: [
           { required: true, message: '天线二未选择', trigger: 'change' }
         ],
-        attenuation_0: [
-          { required: true, message: '设置衰减', trigger: 'change' }
+        selfInspectionAttenuation: [
+          { required: true, message: '设置衰减值', trigger: 'blur' }
         ],
-        attenuation_1: [
-          { required: true, message: '设置衰减', trigger: 'change' }
+        guidanceSwitch: [
+          { required: true, message: '选择开关', trigger: 'change' }
         ],
-        attenuation_2: [
-          { required: true, message: '设置衰减', trigger: 'change' }
+        guidance: [
+          { required: true, message: '输入批次号', trigger: 'blur' }
         ],
-        attenuation_3: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuation_4: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuation_5: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuation_6: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_0: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_1: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_2: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_3: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_4: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_5: [
-          { required: true, message: '设置衰减', trigger: 'change' }
-        ],
-        attenuationTwo_6: [
-          { required: true, message: '设置衰减', trigger: 'change' }
+        faultDetect: [
+          { required: true, message: '设置门限值', trigger: 'blur' }
         ]
       }
 
@@ -399,17 +252,10 @@ export default {
     },
     handleSubmit (name) {
       console.log(this.formValidate)
-      console.log(this.formValidate.threshold)
-      console.log(typeof this.formValidate.threshold)
+      const url = '/deployment/sendSystemConrolCMD/communication'
       this.$refs[name].validate((valid) => {
         if (valid) {
-          setTimeout(() => {
-            this.changeLoading()
-            storage.set('systemcommand', this.formValidate)
-            this.handleReset('formValidate')
-            this.modal1 = false
-            this.$Message.success('设定完成')
-          }, 1000)
+          this.sendRequst(url)
         } else {
           this.$Message.error('输入不完整')
           return this.changeLoading()
@@ -421,9 +267,54 @@ export default {
     },
     changeShowstate () {
       this.modal1 = true
+    },
+    sendRequst (url) {
+      let obj = this.formValidate
+      obj.host = this.host
+      console.log(obj.host)
+      console.log(obj)
+      post(url, obj).then((data) => {
+        if (data.code === 1) {
+          setTimeout(() => {
+            this.changeLoading()
+            storage.set(this.equipmentID, { 'systemcommand': this.formValidate })
+            this.handleReset('formValidate')
+            this.modal1 = false
+            this.$Message.success('设定完成')
+          }, 1000)
+        } else {
+          this.$Message.error({
+            content: '指令提交失败',
+            duration: 1
+          })
+          return this.changeLoading()
+        }
+      }).catch(() => {
+        this.$Message.error({
+          content: '网络请求出错',
+          duration: 1
+        })
+        return this.changeLoading()
+      })
+    },
+    setId (id) {
+      this.equipmentID = id
     }
   },
-  components: {
+  computed: {
+    ...mapGetters(['host'])
+  },
+  watch: {
+    // modal1 (newvalue, oldvalue) {
+    //   // 使用上次操作的值
+    //   let id = this.equipmentID
+    //   if (storage.get(id)) {
+    //     if (storage.get(id).systemcommand) {
+    //       this.formValidate = storage.get(id).systemcommand.systemcommand
+    //     }
+    //   }
+    // }
+
   }
 }
 </script>

@@ -85,26 +85,22 @@
 </style>
 
 <script>
-import { GMTToStr } from '@/api/transformDate'
+import { GMTToStr, getLocalDate } from '@/api/transformDate'
 import { post } from '@/api/axios.js'
 import * as storage from '@/api/localstorage.js'
+import { mapGetters } from 'vuex'
 export default {
-  props: {
-    equipmentID: {// 设备ID
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
+      equipmentID: '',
       modal1: false,
       loading: true,
       isOnly: 'NO', // 判断是否全部更新
       formValidate: {
-        date: '2019-08-08',
-        h: '9',
-        min: '40',
-        ms: '200'
+        date: '2019-05-07',
+        h: '10',
+        min: '10',
+        ms: '10'
       },
       ruleValidate: {
         date: [
@@ -165,14 +161,18 @@ export default {
       timearr.push(this.formValidate.min)
       timearr.push(this.formValidate.h)
       let dataTime = GMTToStr(this.formValidate.date, timearr)
-      console.log(dataTime)
-      let obj = { 'time': dataTime, 'host': '192.168.31.69' }
+      // console.log(dataTime)
+      let obj = { 'time': dataTime, 'host': this.host }
+      let datelocal = this.formValidate
+      datelocal.date = getLocalDate(datelocal.date)
+      // console.log(datelocal)
       post(url, obj).then((data) => {
         if (data.code === 1) {
           setTimeout(() => {
             this.changeLoading()
             // 发送成功将表单数据存到本地
-            storage.set(this.equipmentID, { 'date': this.formValidate })
+
+            storage.set(this.equipmentID, { 'date': datelocal })
             // 清空表单，避免下次打开有初始值
             this.handleReset('formValidate')
             this.modal1 = false
@@ -195,19 +195,28 @@ export default {
         })
         return this.changeLoading()
       })
+    },
+    setId (id) {
+      this.equipmentID = id
     }
   },
-  mounted () {
-    // 使用上次操作的值
-    let id = this.equipmentID
-    if (storage.get(id)) {
-      if (storage.get(id).date) {
-        this.formValidate.date = storage.get(id).date.date
-        this.formValidate.h = storage.get(id).date.h
-        this.formValidate.min = storage.get(id).date.min
-        this.formValidate.ms = storage.get(id).date.ms
-      }
-    }
+  watch: {
+    // modal1 (newvalue, oldvalue) {
+    //   // 使用上次操作的值
+    //   let id = this.equipmentID
+    //   if (storage.get(id)) {
+    //     if (storage.get(id).date) {
+    //       this.formValidate.date = storage.get(id).date.date.date
+    //       this.formValidate.h = storage.get(id).date.date.h
+    //       this.formValidate.min = storage.get(id).date.date.min
+    //       this.formValidate.ms = storage.get(id).date.date.ms
+    //     }
+    //   }
+    // }
+
+  },
+  computed: {
+    ...mapGetters(['ip', 'host'])
   }
 }
 </script>
