@@ -116,14 +116,17 @@ export default {
       if (this.itembutton[index].description === "系统校时") {
         //请求数据
         this.$refs.sysTime.changeShowstate()
+        this.$refs.sysTime.setId(id)
       }
       if (this.itembutton[index].description === "分机控制") {
         //请求数据
         this.$refs.extenControl.changeShowstate()
+        this.$refs.extenControl.setId(id)
       }
       if (this.itembutton[index].description === "系统控制") {
         //请求数据
         this.$refs.sysco.changeShowstate()
+        this.$refs.sysco.setId(id)
       }
       //   else {
       //     this.showList = false
