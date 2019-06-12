@@ -1,8 +1,9 @@
 const state = {
   userName: '',
-  token: '2',
+  token: '',
   password: '',
-  role: 2
+  role: 0,
+  host: null
 }
 
 export default state

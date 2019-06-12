@@ -17,22 +17,6 @@
   width: 70%;
   left: 15%;
 }
-.ivu-table {
-  background-color: transparent !important;
-}
-.ivu-table-wrapper {
-  border: 0;
-}
-.ivu-table td {
-  background-color: #66666652;
-  color: black;
-}
-.ivu-table-header th {
-  color: #f8f8f9;
-  font-weight: bold;
-  background-color: #808695;
-  border: none;
-}
 </style>
 
 <script>

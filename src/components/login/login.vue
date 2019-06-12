@@ -1,68 +1,48 @@
 <template>
   <div class="homepage-hero-module">
     <div class="video-container">
-      <div :style="fixStyle"
-           class="filter"></div>
-      <video :style="fixStyle"
-             autoplay
-             loop
-             class="fillWidth"
-             v-on:canplay="canplay">
-        <source src="./src/MP4/Lonely-Blue.mp4"
-                type="video/mp4" />
-        浏览器不支持 video 标签，建议升级浏览器。
-        <source src="./src/WEBM/Lonely-Blue.webm"
-                type="video/webm" />
-        浏览器不支持 video 标签，建议升级浏览器。
-      </video>
-      <div class="poster hidden"
-           v-if="!vedioCanPlay">
-        <img :style="fixStyle"
-             src="./src/Snapshots/Lonely-Blue.jpg"
-             alt="">
-      </div>
     </div>
     <div class='login'
-         v-show='!resetpwd'>
+         v-if='!resetpwdflag'>
       <div class="header-main">
-        <h2>Login Now</h2>
+        <h2>用户登陆</h2>
         <div class="header-bottom">
           <div class="header-right w3agile">
             <div class="header-left-bottom agileinfo">
               <form>
                 <div class="icon1">
                   <input type="text"
-                         placeholder="User Name"
+                         placeholder="用户名"
                          required=""
                          ref="name"
-                         :value="name" />
+                         :value="userName" />
                 </div>
                 <div class="icon1">
                   <input type="password"
-                         placeholder="Password"
+                         placeholder="密码"
                          required=""
                          ref="pwd"
-                         :value="pwd" />
+                         :value="password" />
                 </div>
                 <div class="login-check">
                   <label class="checkbox"><input type="checkbox"
                            name="checkbox"
                            checked=""
                            ref="rember"
-                           @click="remember"><i> </i> Keep me logged in</label>
+                           @click="remember"><i> </i> 记住账号密码</label>
                 </div>
                 <div class="bottom">
-                  <span @click="loging">Log in</span>
+                  <span @click="loging">登陆</span>
                 </div>
-                <p><a href="#"
-                     @click="changestate">Forgot Password?</a></p>
+                <!-- <p><a href="#"
+                     @click="changestate">忘记密码?</a></p> -->
               </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <resetpwd v-show="resetpwd"
+    <resetpwd v-if="resetpwdflag"
               @resetpassword="subreset"></resetpwd>
   </div>
 
@@ -79,6 +59,7 @@
 }
 .homepage-hero-module,
 .video-container {
+  background: #548692;
   position: relative;
   height: 100vh;
   overflow: hidden;
@@ -98,7 +79,7 @@
 </style>
 <script>
 /*eslint-disable*/
-import { get, post } from '@/api/axios.js'
+import { get, post, patch } from '@/api/axios.js'
 import * as oatu from '@/api/permission.js'
 import * as cookie from '@/api/getcookie'
 import { mapMutations, mapGetters } from 'vuex'
@@ -113,7 +94,7 @@ export default {
       name: '',
       pwd: '',
       rememberPassword: false,
-      resetpwd: false
+      resetpwdflag: false
     }
   },
   created: function () {
@@ -166,6 +147,12 @@ export default {
             let dataObj = data
             let that = this
             this.rememberPassword = this.$refs.rember.checked
+            // 获取 IP
+            get('/deployment').then((data) => {
+              this._sethost(data.data[0].host)
+            }).catch(() => {
+              throw new Error('IP获取失败')
+            })
             setTimeout(() => {
               this._setToken(dataObj.token)
               this._setuser(dataObj.username)
@@ -191,8 +178,6 @@ export default {
                 name: 'Home'
               })
             }
-
-
           })
           .catch(() =>
             this.$Message.error({
@@ -200,7 +185,6 @@ export default {
               duration: 1
             })
           )
-
       }
     },
     _getFormat () {
@@ -215,12 +199,13 @@ export default {
       _setuser: 'SET_USER',
       _setToken: 'SET_TOKEN',
       _setpassword: 'SET_PWD',
-      _setuserRole: 'SET_ROLE'    }),
+      _setuserRole: 'SET_ROLE',
+      _sethost: 'SET_HOST'    }),
     remember () {
       this.rememberPassword = this.$refs.rember.checked
     },
     changestate () {
-      this.resetpwd = true
+      this.resetpwdflag = true
     },
     subreset (obj) {
       //   if (this.token || cookie.gettoken()) {
@@ -228,10 +213,10 @@ export default {
       //     cookie.removetoken()
       //   }
       // token不存在时重发请求
-      post('/user/resetpassword', obj)
+      patch('/users/changePassword', obj)
         .then(data => {
           //   console.log(data)
-          if (data.code !== '0') {
+          if (data.code !== 1) {
             this.$Message.error({
               content: '密码修改失败！请重试',
               duration: 1
@@ -248,7 +233,7 @@ export default {
           //     cookie.removecookie()
           //   }
           // 修改密码界面隐藏
-          this.resetpwd = false
+          this.resetpwdflag = false
         })
         .catch(() => {
           this.$Message.error({
@@ -256,9 +241,8 @@ export default {
             duration: 1
           })
 
-          this.resetpwd = false
+          this.resetpwdflag = false
         }
-
         )
 
 
@@ -303,7 +287,7 @@ export default {
     window.onresize()
   },
   computed: {
-    ...mapGetters(['token']) // 获取当前token值
+    ...mapGetters(['token', 'userName', 'password', 'ip']) // 获取当前token值
   },
   watch: {
     // 监听token值的变化，刷新登录页

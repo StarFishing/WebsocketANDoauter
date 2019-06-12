@@ -12,17 +12,18 @@ export function setcookie (data) {
     username: '',
     password: '',
     token: '',
-    role: ''
+    role: 0
   }
   for (let items in obj) {
     if (data[items]) {
       if (items === 'token') {
         Cookies2.set(items, data[items])
+      } else {
+        obj[items] = data[items]
       }
-      obj[items] = data[items]
     }
   }
-  obj.username = Cookies2.set('information', obj)
+  Cookies2.set('information', obj)
 }
 // 清除cookie
 export function removecookie () {

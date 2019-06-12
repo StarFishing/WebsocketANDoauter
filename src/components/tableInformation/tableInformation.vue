@@ -14,10 +14,10 @@
         <Button type="primary"
                 size="small"
                 style="margin-right: 5px"
-                @click="show(index)">Reset</Button>
+                @click="show(index)">修改</Button>
         <Button type="error"
                 size="small"
-                @click="remove(index)">Delete</Button>
+                @click="remove(index)">删除</Button>
       </template>
     </Table>
     <change-password ref="changepassword"
@@ -55,7 +55,7 @@ export default {
           slot: 'id'
         },
         {
-          title: 'Username',
+          title: '用户名',
           key: 'username'
         },
         // {
@@ -63,7 +63,7 @@ export default {
         //   key: 'password'
         // },
         {
-          title: 'Action',
+          title: '操作',
           slot: 'action',
           width: 150,
           align: 'center'
