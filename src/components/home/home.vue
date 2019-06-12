@@ -310,7 +310,7 @@ export default {
   /* border: 1px solid white; */
   border-radius: 10px;
   position: relative;
-  background-image: url("http://img4.imgtn.bdimg.com/it/u=2146046871,2611785107&fm=26&gp=0.jpg");
+  background-image: url("../../assets/true.jpg");
   background-size: cover;
   overflow: hidden;
   box-shadow: 2px 1px 8px 0px #444;
@@ -325,7 +325,8 @@ export default {
   height: 40px;
   width: 100%;
   box-sizing: border-box;
-  background: #ffffff47;
+  /* background: #ffffff47; */
+  background: white;
   /* border-top: 1px solid black; */
   padding: 5px 10px;
   border-top-right-radius: 10px;
