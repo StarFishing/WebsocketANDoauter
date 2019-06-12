@@ -21,7 +21,8 @@
             <FormItem prop="date">
               <DatePicker type="date"
                           placeholder="Select date"
-                          v-model="formValidate.date"></DatePicker>
+                          v-model="formValidate.date"
+                          @on-change="_getdate"></DatePicker>
             </FormItem>
             </Col>
             <Col span="1"
@@ -85,7 +86,7 @@
 </style>
 
 <script>
-import { GMTToStr, getLocalDate } from '@/api/transformDate'
+import { GMTToStr } from '@/api/transformDate'
 import { post } from '@/api/axios.js'
 import * as storage from '@/api/localstorage.js'
 import { mapGetters } from 'vuex'
@@ -93,6 +94,7 @@ export default {
   data () {
     return {
       equipmentID: '',
+      localDate: '',
       modal1: false,
       loading: true,
       isOnly: 'NO', // 判断是否全部更新
@@ -132,6 +134,9 @@ export default {
     cancel () {
       this.handleReset('formValidate')
     },
+    _getdate (date) {
+      if (date.length !== 0) { this.localDate = date }
+    },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -164,7 +169,8 @@ export default {
       // console.log(dataTime)
       let obj = { 'time': dataTime, 'host': this.host }
       let datelocal = this.formValidate
-      datelocal.date = getLocalDate(datelocal.date)
+      datelocal.date = this.localDate
+      // datelocal.date = getLocalDate(datelocal.date)
       // console.log(datelocal)
       post(url, obj).then((data) => {
         if (data.code === 1) {
