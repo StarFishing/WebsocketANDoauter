@@ -177,7 +177,6 @@ export default {
           setTimeout(() => {
             this.changeLoading()
             // 发送成功将表单数据存到本地
-
             storage.set(this.equipmentID, { 'date': datelocal })
             // 清空表单，避免下次打开有初始值
             this.handleReset('formValidate')
