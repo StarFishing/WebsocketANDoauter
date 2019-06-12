@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import 'babel-polyfill'
 import 'common/stylus/reset.styl'
 import store from '@/store/index'
 import iView from 'iview'
@@ -26,6 +27,28 @@ Vue.use(iView)
 //     role: cookie.gettoken()
 //   })
 // }
+if (Number.parseInt === undefined) Number.parseInt = window.parseInt
+if (Number.parseFloat === undefined) Number.parseFloat = window.parseFloat
+
+/*
+ *兼容IE11的vue-router
+ */
+if (
+  '-ms-scroll-limit' in document.documentElement.style &&
+  '-ms-ime-align' in document.documentElement.style
+) {
+  // detect it's IE11
+  window.addEventListener(
+    'hashchange',
+    function(event) {
+      var currentPath = window.location.hash.slice(1)
+      if (store.state.route.path !== currentPath) {
+        router.push(currentPath)
+      }
+    },
+    false
+  )
+}
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
@@ -50,6 +73,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
