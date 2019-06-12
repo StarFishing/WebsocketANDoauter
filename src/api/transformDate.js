@@ -14,11 +14,11 @@ export function GMTToStr(data, time) {
   let Month =
     date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
   let str =
-    arr[0] +
+    arr[2] +
     ':' +
     arr[1] +
     ':' +
-    arr[2] +
+    arr[0] +
     ':' +
     day +
     ':' +
