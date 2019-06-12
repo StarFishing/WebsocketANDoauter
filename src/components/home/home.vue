@@ -112,19 +112,20 @@ export default {
       this.loading = true
       // 下面是针对设备信息的处理
       this.currentButtonIndex[id].button = index
+      console.log("当前选择指令--设备 " + id + " :" + this.itembutton[index].description)
       // 获取当前点击的设备，和对当前设备做的哪一步操作（index）
-      if (this.itembutton[index].description === "系统校时") {
-        //请求数据
+      if (index === 0) {
+        //请求数据--系统校时
         this.$refs.sysTime.changeShowstate()
         this.$refs.sysTime.setId(id)
       }
-      if (this.itembutton[index].description === "分机控制") {
-        //请求数据
+      if (index === 1) {
+        //请求数据--分机控制
         this.$refs.extenControl.changeShowstate()
         this.$refs.extenControl.setId(id)
       }
-      if (this.itembutton[index].description === "系统控制") {
-        //请求数据
+      if (index === 2) {
+        //请求数据--系统控制
         this.$refs.sysco.changeShowstate()
         this.$refs.sysco.setId(id)
       }

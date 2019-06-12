@@ -1,19 +1,19 @@
 import * as types from './mutation-types'
 
 const mutations = {
-  [types.SET_USER](state, userName) {
+  [types.SET_USER] (state, userName) {
     state.userName = userName
   },
-  [types.SET_TOKEN](state, token) {
+  [types.SET_TOKEN] (state, token) {
     state.token = token
   },
-  [types.SET_PWD](state, pwd) {
+  [types.SET_PWD] (state, pwd) {
     state.password = pwd
   },
-  [types.SET_ROLE](state, role) {
+  [types.SET_ROLE] (state, role) {
     state.role = role
   },
-  [types.SET_HOST](state, host) {
+  [types.SET_HOST] (state, host) {
     state.host = host
   }
 }

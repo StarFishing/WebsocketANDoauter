@@ -1,4 +1,4 @@
-export function GMTToStr(data, time) {
+export function GMTToStr (data, time) {
   let date = new Date(data)
   // let arr = []
   // arr = time.split(':')
@@ -27,7 +27,7 @@ export function GMTToStr(data, time) {
     date.getFullYear()
   return str
 }
-export function getLocalDate(data) {
+export function getLocalDate (data) {
   let date = new Date(data)
   let day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
   let Month =

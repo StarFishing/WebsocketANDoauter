@@ -40,7 +40,7 @@ if (
   // detect it's IE11
   window.addEventListener(
     'hashchange',
-    function(event) {
+    function (event) {
       var currentPath = window.location.hash.slice(1)
       if (store.state.route.path !== currentPath) {
         router.push(currentPath)
